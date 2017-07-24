@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Simple MutationObserver Example</title>
+    <style>
+      .invisible {
+        opacity: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Simple MutationObserver Example</h1>
+    <response class="invisible response">Success!</response>
+    <ul>
+      <li>Pre-existing list item</li>
+      <li>Pre-existing list item</li>
+    </ul>
+    <p><a data-click="add-list-item" href="#">Add a list item</a></p>
+
+    <script>
+      var unorderedList = document.getElementsByTagName('ul')[0];
+
+      if (unorderedList) {
+        var observer = new MutationObserver(function(mutations) {
+
+          for (var i = 0; i < mutations.length; i++) {
+            // if a childNode has been added or removed...
+            if (mutations[i].type == 'childList') {
+              showSuccessMsg();
+            }
+          };
+        });
+
+        // pass in the target node and the observer config options
+        observer.observe(unorderedList, { childList: true, subtree: true });
+
+        // listen for any clicks on the add-list-item link
+        document.querySelector('[data-click="add-list-item"]').onclick = function(event) {
+          var newLi = document.createElement('li');
+
+          newLi.innerText = 'New list item';
+          unorderedList.appendChild(newLi);
+
+          event.preventDefault();
+        };
+      }
+
+      // show a success message for a sec, and then hide it again
+      function showSuccessMsg() {
+        var responseEl = document.getElementsByTagName('response')[0];
+        if (responseEl) {
+          responseEl.classList.remove('invisible');
+          window.setTimeout(function() {
+            responseEl.classList.add('invisible');
+          }, 1000);
+        }
+      }
+    </script>
+  </body>
+</html>

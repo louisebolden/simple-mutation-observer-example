@@ -1,1 +1,1 @@
-# simple-mutation-observer-example
+A very simple example of using the MutationObserver JavaScript class.
